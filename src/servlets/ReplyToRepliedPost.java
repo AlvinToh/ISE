@@ -51,29 +51,35 @@ public class ReplyToRepliedPost extends HttpServlet {
 		int postID = Integer.parseInt((String)request.getParameter("postID"));
 		
 		// for reply to reply
-        String replyToPostID = (String)request.getParameter("replyToPostID");
-		int post_id = Integer.parseInt(replyToPostID);
-		int level = postDAO.getPostLevel(post_id);
+        String tempParentID = (String)request.getParameter("ParentID");
+		int ParentID = Integer.parseInt(tempParentID);
+		int level = postDAO.getPostLevel(postID);
 		String tempPostTitle = request.getParameter("postTitle");
 		String tempPostContent = request.getParameter("postContent");
 		String tempReplyToPostContent = request.getParameter("replyToPostContent");
 		
+		System.out.println("postID "+postID);
+		System.out.println("ParentID "+ParentID);
+		System.out.println(" postID level "+level);
 		
+		System.out.println("tempPostTitle "+tempPostTitle);
+		System.out.println("tempPostContent "+tempPostContent);
+		System.out.println("tempReplyToPostContent "+tempReplyToPostContent);
 		
-		//post_id is NOT empty, but tempPostContent is empty	
+		//ParentID is NOT empty, but tempPostContent is empty	
 		if(tempReplyToPostContent.isEmpty()||tempReplyToPostContent == null){
 			errorMsg = "Your reply content cannot be empty!";
-			RequestDispatcher rd = request.getRequestDispatcher("replyToRepliedPost.jsp?post_id="+postID+"&replyToPostID="+post_id);
+			RequestDispatcher rd = request.getRequestDispatcher("replyToRepliedPost.jsp?parentID="+ParentID+"&post_id="+postID);
 			request.setAttribute("replyToPost", errorMsg);
 			rd.forward(request, response);
 			return;
 		}else{
-			postDAO.replyToPost(avatar_id, level, post_id, tempPostTitle, tempReplyToPostContent);
-			RequestDispatcher rd = request.getRequestDispatcher("viewPost.jsp?post_id="+postID);
+			postDAO.replyToPost(avatar_id, level, postID, tempPostTitle, tempReplyToPostContent);
+			RequestDispatcher rd = request.getRequestDispatcher("viewPost.jsp?post_id="+ParentID);
 			rd.forward(request, response);
 			return;
 		}
-		
+	
 		
 
 		

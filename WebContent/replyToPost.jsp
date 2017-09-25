@@ -89,6 +89,15 @@
 								Content</strong></label>
 						<div class="col-sm-9">
 							<textarea name="postContent" class="form-control"
+								id="inputEmail3" readonly> <%=parentPost.getPost_content()%></textarea>
+
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="inputEmail3" class="col-sm-2 col-form-label"><strong>Post
+								Content</strong></label>
+						<div class="col-sm-9">
+							<textarea name="postContent" class="form-control"
 								id="inputEmail3" placeholder="Enter your reply here"></textarea>
 
 						</div>

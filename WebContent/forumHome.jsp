@@ -66,12 +66,12 @@
 					<thead class="thead-default">
 
 						<tr>
-							<th width="15%">Avatar Name</th>
-							<th>Post Title</th>
+							<th width="54%">Post Title</th>
+							<th width="10%">Avatar Name</th>
 							<th width="10%">QA Coins</th>
 							<th width="5%">Votes</th>
 							<th width="11%">Datetime</th>
-							<th>Actions</th>
+							<th width="10%">Actions</th>
 
 						</tr>
 						<%
@@ -82,11 +82,11 @@
 					<tbody>
 
 						<tr>
-							<th><a href="viewYourPosts.jsp?avatar_id=<%=post.getAvatar_id()%>"><%=avatarDAO.getAvatarName(post.getAvatar_id())%></a></th>
 							<td><a href="viewPost.jsp?post_id=<%=post.getPost_id()%>"><%=post.getPost_title()%></a></td>
+							<th><a href="viewYourPosts.jsp?avatar_id=<%=post.getAvatar_id()%>"><%=avatarDAO.getAvatarName(post.getAvatar_id())%></a></th>
 							<td>20</td>
 							<td>20/20</td>
-							<td><%=post.getTimestamp()%></td>
+							<td><%=post.getTimestamp().toString().replaceAll("\\.\\d+", "")%></td>
 							<td><a href="replyToPost.jsp?post_id=<%=post.getPost_id()%>">Reply</a>
 							</td>
 

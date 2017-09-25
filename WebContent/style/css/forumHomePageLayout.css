@@ -8,6 +8,21 @@ div.scroll {
 	overflow-x: hidden;
 }
 
+div.scroll_viewPost {
+	width: 1100px;
+	height: 420px;
+	overflow: scroll;
+	border: 2px solid #E5E7E9;
+	overflow-x: hidden;
+}
+
+td.div2 {
+    white-space: nowrap; 
+    width: 1px; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+
+}
 div.viewPostBoarder {
 	border: 2px solid #E5E7E9;
 }

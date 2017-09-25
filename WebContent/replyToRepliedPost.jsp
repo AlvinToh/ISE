@@ -24,11 +24,11 @@
 		String post_idTemp = request.getParameter("post_id");
 		int post_id = Integer.parseInt(post_idTemp);
 		
-		String tempID = request.getParameter("replyToPostID");
-		int replyToPostID = Integer.parseInt(tempID);
+		String tempID = request.getParameter("parentID");
+		int ParentID = Integer.parseInt(tempID);
 
 		PostDAO pd = new PostDAO();
-		Post parentPost = pd.retrieveParentPostID(replyToPostID);	
+		Post parentPost = pd.retrieveParentPostID(post_id);	
 
 		String errorMsgs = (String) request.getAttribute("replyToPost");
 	%>
@@ -48,7 +48,7 @@
 					<div class="col-2">
 						<div class="btn-group" role="group" aria-label="Basic example">
 							<a class="btn btn-outline-primary" style="width: 10rem"
-								href="viewPost.jsp?post_id=<%=post_id%>"><b>Back to Post</b></a>
+								href="viewPost.jsp?post_id=<%=ParentID%>"><b>Back to Post</b></a>
 								
 						</div>
 					</div>
@@ -76,8 +76,17 @@
 
 				<form name="replyForm" method="post" action="ReplyToRepliedPost">
 					<input type="text" name="postID" value="<%=post_id%>" hidden /> 
-					<input type="text" name="replyToPostID" value="<%=replyToPostID%>" hidden />
-					<input type="text" name="postTitle" value="<%=parentPost.getPost_title()%>" hidden />
+					<input type="text" name="ParentID" value="<%=ParentID%>" hidden />
+			
+					<div class="form-group row">
+						<label for="inputEmail3" class="col-sm-2 col-form-label"><strong>Post
+								Title</strong></label>
+						<div class="col-sm-9">
+							<input type="text" name="postTitle" class="form-control"
+								id="inputEmail3" value="<%=parentPost.getPost_title()%>"
+								readonly />
+						</div>
+					</div>
 					<div class="form-group row">
 						<label for="inputEmail3" class="col-sm-2 col-form-label"><strong>Post
 								Content</strong></label>

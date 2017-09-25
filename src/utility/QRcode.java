@@ -36,11 +36,11 @@ public class QRcode {
 		//This filepath is fixed on my pc so may change accordingly
 		//"../../../WebContent/images"
 		// local eclipse
-		String filePath = "C:/Users/User/workspace/ISE/WebContent/images/QRcode.png";
+		//String filePath = "C:/Users/User/workspace/ISE/WebContent/images/QRcode.png";
 		//local tomcat
 		//String filePath = "C:/apache-tomcat-9.0.0.M21-windows-x64/apache-tomcat-9.0.0.M21/webapps/ISE/images/QRcode.png";
 		// server tomcat
-		//String filePath = "C:/apache-tomcat-9.0.0.M22-windows-x64/apache-tomcat-9.0.0.M22/webapps/ISE/images/QRcode.png";
+		String filePath = "C:/apache-tomcat-9.0.0.M22-windows-x64/apache-tomcat-9.0.0.M22/webapps/ISE/images/QRcode.png";
 		//String filePath = "C:/Users/User/workspace/ISE/WebContent/images/"+code.substring(36)+".png";
 		         //C:\apache-tomcat-9.0.0.M21-windows-x64\apache-tomcat-9.0.0.M21\webapps\ISE\images
 		int size = 200;

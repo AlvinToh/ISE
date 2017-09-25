@@ -18,6 +18,12 @@
 <body>
 	
 <%@ include file="navigationBar.jsp"%>
+	<%
+		ProfessorDAO profDAO = new ProfessorDAO();
+		Professor prof = (Professor) session.getAttribute("professor");
+		int profAvatar = prof.getAvatar_id();
+		ArrayList<String> groups = profDAO.retrieveProfessorSections(profAvatar);
+	%>
 
 
 
@@ -54,13 +60,14 @@
 						<label>Session: &nbsp</label>
 					</div>
 
-					<select name="session" id="session" required autofocus style="width: 9rem">
+					<select name="session" id="session" required autofocus
+						style="width: 9rem">
 						<option value="">Select a session</option>
 						<%
-						for (int i = 1; i < 12; i++) {
-							out.println("<option value='G" + i + "'>G" + i + "</option>");
-						}
-					%>
+							for (int i = 0; i < groups.size(); i++) {
+								out.println("<option value='" + groups.get(i) + "'>" + groups.get(i) + "</option>");
+							}
+						%>
 
 					</select>
 

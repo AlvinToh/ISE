@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,50 +22,46 @@ public class PostDAO {
 		public static void main(String[] args){
 			System.out.println("ssss");
 			PostDAO pd = new PostDAO();
+			System.out.println(pd.retrieveParentPostID(1).getNumber_of_upvotes());
 			HashMap<Integer, Post> map = pd.searchByKeyword("s") ;
-			//Recursive
-			List<Integer> t = pd.getSubPostIDRecursion(1);
-			List<List<Integer>> postList = new ArrayList<>();
-			for(Integer i: t){
-				System.out.println(i);
-			}
-			
-			
-			//String string="SMU adopts a Code of Academic Integrity.  There are serious penalties, ddincluding expulsion, for cheating, plagiarism, fabrication, multiple";
-			//System.out.println("substring   "+string.length());
-			//System.out.println("Post Level:    " + pd.getPostLevel(1));
-			
-		  //  System.out.println(map.size());
-	/*		for (Integer key : map.keySet()) {
-			    System.out.println(key + " " + map.get(key) + " " +map.get(key).getAvatar_id() +"   "+ map.get(key).getPost_id()+ " " +map.get(key).getPost_content());
-			}
-			
-			System.out.println(pd.lastPostID(1));
-			
-			
-			System.out.println(pd.lastPostIDofAvatar(2));
-			System.out.println(pd.lastPostIDofAvatar(1));
-	*/		
-/*			List<Integer> tempList = pd.retrieveAllPosts(2);
-			for(Integer i: tempList){
+/*			//Recursive
+			List<String> t = pd.getSubPostIDRecursion(1, 1);
+            int f=1;
+			for(String i: t){
+				Post post = pd.retrieveParentPostID(Integer.parseInt(i.split("-")[0]));
 				
-			
-			System.out.println(pd.retrievePostbyID(i).getPost_title());
 			}*/
+			
+			Post p = pd.retrieveParentPostID(1);
+			System.out.println("dddd"+p.getThoughfulness_score()+Float.MAX_VALUE);
+
+
 
 		}
-		private List<Integer> temp = new ArrayList<>();
-		public List<Integer> getSubPostIDRecursion (int postid){
+		private List<String> temp = new ArrayList<>();
+		public List<String> getSubPostIDRecursion (int postid, int level){
 			// if this postid doesn't have sub post
 			if(retrieveAPost(postid)==null){
-				temp.add(postid);
+				//System.out.println(postid +" " + level);
+		        if(level>=6){
+		        	temp.add(postid+"-"+6);
+		        }else{
+		        	temp.add(postid+"-"+level);
+		        }
+				
 			}else{	
 				// postid has sub post
 				// using treemap to sort returned map - retrieveAPost
 				// then loop through each sub post				
 				for(Integer i:new TreeMap<Integer, Post>(retrieveAPost(postid)).keySet()){
-					temp.add(i);
-					getSubPostIDRecursion(i);
+				       if(level>=6){
+				        	temp.add(i+"-"+6);
+				        }else{
+				        	temp.add(i+"-"+level);
+				        }
+	
+					//System.out.println(i+"- "+level);
+					getSubPostIDRecursion(i,level+1);
 				}
 				
 			}
@@ -227,7 +224,7 @@ public class PostDAO {
 	        return postMap;
 	    }
 	    
-	    // retrieve Parent post -> for viewPost.jsp	    
+	    // retrieve Parent post -> for viewPost.jsp	isQuestion=1!!!!!!!    
 	    public Post retrieveParentPost(int postID) {
 	        Connection conn = null;
 	        PreparedStatement stmt = null;
@@ -279,7 +276,7 @@ public class PostDAO {
 	        return returnPost;
 	    }
 	    
-	    // reply to reply  --> replyToRepliedPost.jsp
+	    // reply to reply  --> replyToRepliedPost.jsp, viewPostContent.jsp
 	    public Post retrieveParentPostID(int postID) {
 	        Connection conn = null;
 	        PreparedStatement stmt = null;
@@ -536,8 +533,8 @@ public class PostDAO {
 		       
 		        stmt.setInt(1,avatar_id);
 		        stmt.setInt(2,post_id); // parentID
-		        if(level==8){
-		        	stmt.setInt(3, 8); // level
+		        if(level>=6){
+		        	stmt.setInt(3, 6); // level
 		        }else{
 		        	stmt.setInt(3,level+1); //level 
 		        }
@@ -664,5 +661,31 @@ public class PostDAO {
 	        }
 	        return returnList;
 	    }
+	    
+	    	    
+	    //edit mark
+	    public void updateMark (int postID, float mark){
+	       	Connection conn = null;
+		    PreparedStatement stmt = null;
+		    String sql = "";	   
+		    
+		    try {
+		    	conn = ConnectionManager.getConnection();
+		    	sql = "update "+ TBLNAME +" set thoughfulness_score = ? where post_id = ?";
+		        stmt = conn.prepareStatement(sql);
+		        stmt.setFloat(1, mark);
+		        stmt.setInt(2,postID); 
+
+		        stmt.executeUpdate();
+
+	        } catch (SQLException ex) {
+	        	 String msg = "An exception occurs when update post thoughfulness_score in the post table! ";
+		         handleSQLException(ex, sql, "msg={" + msg + "}");
+		    } finally {
+		            ConnectionManager.close(conn, stmt);
+		    }
+	    }
+	    
+	   
 
 }
