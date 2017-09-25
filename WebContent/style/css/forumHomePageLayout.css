@@ -1,0 +1,30 @@
+@CHARSET "ISO-8859-1";
+
+div.scroll {
+	width: 1000px;
+	height: 420px;
+	overflow: scroll;
+	border: 2px solid #E5E7E9;
+	overflow-x: hidden;
+}
+
+div.viewPostBoarder {
+	border: 2px solid #E5E7E9;
+}
+
+div.bootstrapBoarder {
+	width: 400px;
+	height: 420px;
+	border: 2px solid #E5E7E9;
+	
+	
+}
+
+
+div.scrollSummary {
+	width: 800px;
+	height: 420px;
+	overflow: scroll;
+	border: 2px solid #E5E7E9;
+	overflow-x: hidden;
+}
