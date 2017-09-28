@@ -1,6 +1,12 @@
 package servlets;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,12 +42,34 @@ public class CreateFreeSlot extends HttpServlet {
     	String startDateTime = request.getParameter("startDateTime");
 		String endDateTime = request.getParameter("endDateTime");
 		
-		ConsultationTimeSlotDAO consultationTimeSlotDAO = new ConsultationTimeSlotDAO();
-		consultationTimeSlotDAO.createFreeTimeSlot(professorEmail, title, startDateTime, endDateTime);
 		
-		String msg="Free timeslot created successfully.";
-		session.setAttribute("successfulTimeSlotMsg", msg);
-		response.sendRedirect("consultation.jsp");
+		String errorTimeSlotMsg = "";
+		Date startDate = new Date();
+		Date endDate = new Date();
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try{
+			startDate = df.parse(startDateTime);
+			endDate = df.parse(endDateTime);
+		}catch (ParseException e){
+			e.printStackTrace();
+		}
+		
+		if(startDate.after(endDate)){
+			errorTimeSlotMsg = "Error: Start datetime is later than the End datetime!";
+			RequestDispatcher rd = request.getRequestDispatcher("consultation.jsp");
+			request.setAttribute("errorTimeSlotMsg", errorTimeSlotMsg);
+			rd.forward(request, response);
+			
+    	} else{
+		
+    		ConsultationTimeSlotDAO consultationTimeSlotDAO = new ConsultationTimeSlotDAO();
+    		consultationTimeSlotDAO.createFreeTimeSlot(professorEmail, title, startDateTime, endDateTime);
+		
+    		String msg="Free timeslot created successfully.";
+			session.setAttribute("successfulTimeSlotMsg", msg);
+			response.sendRedirect("consultation.jsp");
+    	}
     }
     
 

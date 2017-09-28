@@ -72,17 +72,27 @@
 		String successfulTimeSlotMsg = (String) session.getAttribute("successfulTimeSlotMsg");
 		if (successfulTimeSlotMsg != null && successfulTimeSlotMsg.length() > 0) {
 			out.println("<div class='container' align='center' style='padding:0px;height:40px'>");
-			out.println("<div class='alert alert-warning' style='width:400px'>");
+			out.println("<div class='alert alert-warning' style='width:600px'>");
 			out.println("<font color='blue'>");
 			out.println(successfulTimeSlotMsg);
 			out.println("</font>");
 		}
 		session.removeAttribute("successfulTimeSlotMsg");
 		
+		String errorTimeSlotMsg = (String) request.getAttribute("errorTimeSlotMsg");
+		if (errorTimeSlotMsg != null && errorTimeSlotMsg.length() > 0) {
+			out.println("<div class='container' align='center' style='padding:0px;height:40px'>");
+			out.println("<div class='alert alert-warning' style='width:600px'>");
+			out.println("<font color='red'>");
+			out.println(errorTimeSlotMsg);
+			out.println("</font>");
+		}
+		request.removeAttribute("error");
+		
 		String approvedTimeSlotMsg = (String) session.getAttribute("approvedTimeSlotMsg");
 		if (approvedTimeSlotMsg != null && approvedTimeSlotMsg.length() > 0) {
 			out.println("<div class='container' align='center' style='padding:0px;height:40px'>");
-			out.println("<div class='alert alert-warning' style='width:400px'>");
+			out.println("<div class='alert alert-warning' style='width:600px'>");
 			out.println("<font color='blue'>");
 			out.println(approvedTimeSlotMsg);
 			out.println("</font>");
@@ -92,7 +102,7 @@
 		String rejectedTimeSlotMsg = (String) session.getAttribute("rejectedTimeSlotMsg");
 		if (rejectedTimeSlotMsg != null && rejectedTimeSlotMsg.length() > 0) {
 			out.println("<div class='container' align='center' style='padding:0px;height:40px'>");
-			out.println("<div class='alert alert-warning' style='width:400px'>");
+			out.println("<div class='alert alert-warning' style='width:600px'>");
 			out.println("<font color='red'>");
 			out.println(rejectedTimeSlotMsg);
 			out.println("</font>");
@@ -118,7 +128,7 @@
 						<label for="Subject" class="col-md-12 control-label">Title </label>
 						<div class="input-group col-md-12">
 							<input class="form-control" type="text" size="20" id="title" name="title"
-								value="" /><br />
+								value="" required/><br />
 						</div>
 					</div>
 					<div class="form-group">
@@ -128,7 +138,7 @@
 							data-date-format="dd MM yyyy - HH:ii p"
 							data-link-field="startDateTime">
 							<input class="form-control" size="20" type="text" value=""
-								readonly> <span class="input-group-addon"><span
+								required> <span class="input-group-addon"><span
 								class="fa fa-times"></span></span> <span class="input-group-addon"><span
 								class="fa fa-calendar"></span></span>
 						</div>
@@ -141,7 +151,7 @@
 							data-date-format="dd MM yyyy - HH:ii p"
 							data-link-field="endDateTime">
 							<input class="form-control" size="20" type="text" value=""
-								readonly> <span class="input-group-addon"><span
+								required> <span class="input-group-addon"><span
 								class="fa fa-times"></span></span> <span class="input-group-addon"><span
 								class="fa fa-calendar"></span></span>
 						</div>
