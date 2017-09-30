@@ -42,12 +42,15 @@ public class CreateFreeSlot extends HttpServlet {
     	String startDateTime = request.getParameter("startDateTime");
 		String endDateTime = request.getParameter("endDateTime");
 		
+		//Round off seconds component from the Date string to 00
+		String subStartDateTime = startDateTime.substring(0, startDateTime.length()-2) + "00";
+		String subEndDateTime = endDateTime.substring(0, endDateTime.length()-2) + "00";
 		
 		String errorTimeSlotMsg = "";
 		Date startDate = new Date();
 		Date endDate = new Date();
 		
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		try{
 			startDate = df.parse(startDateTime);
 			endDate = df.parse(endDateTime);
@@ -64,7 +67,7 @@ public class CreateFreeSlot extends HttpServlet {
     	} else{
 		
     		ConsultationTimeSlotDAO consultationTimeSlotDAO = new ConsultationTimeSlotDAO();
-    		consultationTimeSlotDAO.createFreeTimeSlot(professorEmail, title, startDateTime, endDateTime);
+    		consultationTimeSlotDAO.createFreeTimeSlot(professorEmail, title, subStartDateTime, subEndDateTime);
 		
     		String msg="Free timeslot created successfully.";
 			session.setAttribute("successfulTimeSlotMsg", msg);

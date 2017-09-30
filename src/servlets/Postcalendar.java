@@ -1,7 +1,20 @@
 package servlets;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.mail.BodyPart;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -60,6 +73,25 @@ public class Postcalendar extends HttpServlet {
 		Email profEmail = new Email();
 		
 		//emailSend.addRecipients("optional default name", CC, "rocky@candyshop.org; Chocobo <chocobo@candyshop.org>");
+		
+		//HTML mail content
+/*		Session session = Session.getDefaultInstance(props);
+		MimeMessage message = new MimeMessage(session);
+		try{
+			MimeMultipart multipart = new MimeMultipart();
+			BodyPart messageBodyPart = new MimeBodyPart();
+			
+			Map<String, String> input = new HashMap<String, String>();
+			String htmlText = readEmailFromHtml("templates/HTMLEmailTemplate", input);
+			messageBodyPart.setContent(htmlText, "text/html");
+			multipart.addBodyPart(messageBodyPart); 
+			message.setContent(multipart);
+		} catch (MessagingException ex) {
+			Logger.getLogger(Postcalendar.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (Exception ae) {
+			ae.printStackTrace();
+		}
+		*/
 		
 		if(postAction.equals("approve")){
 			
@@ -172,5 +204,39 @@ public class Postcalendar extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	
+	// Method to replace the values for keys
+	protected String readEmailFromHtml(String filePath, Map<String, String> input){
+		String msg = readContentFromFile(filePath);
+		try{
+			Set<Entry<String, String>> entries = input.entrySet();
+			for(Map.Entry<String, String> entry : entries) {
+				msg = msg.replace(entry.getKey().trim(), entry.getValue().trim());
+			}
+		} catch(Exception exception){
+			exception.printStackTrace();
+		}
+			return msg;
+	}
 
+	// Method to read HTML file as a String
+	private String readContentFromFile(String fileName) {
+		StringBuffer contents = new StringBuffer();
+		try {
+		//use buffering, reading one line at a time
+		BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			try {
+				String line = null; 
+				while (( line = reader.readLine()) != null){
+					contents.append(line);
+					contents.append(System.getProperty("line.separator")); 
+				}
+			} finally {
+				reader.close();
+			}
+		} catch (IOException ex){
+			ex.printStackTrace();
+		}
+		return contents.toString();
+	}
 }
