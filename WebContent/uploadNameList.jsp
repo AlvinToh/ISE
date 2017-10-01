@@ -82,24 +82,63 @@
 %>
 
 <body>
+	<%@ include file="navigationBar.jsp"%>
 
+	<div style="margin-top: 2%"></div>
+	<div class="container text-center">
+		<div class="container">
+			<h1>Upload Avatar List</h1>
+			<hr>
+		</div>
 
+	</div>
+	
+		<div class="row justify-content-md-center">
+
+		<div class="col-12 col-md-auto">
+
+			<div class="uploadBoarder">
 				<form method="post" action="uploadNameList.jsp" name="upform"
 					enctype="multipart/form-data">
 					<br>
 
-					
-								<input type="file" name="uploadNameList" class="form-control-label"
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-1"></div>
+							<div class="form-control" style="height: 3rem; width: 27rem">
+								<label><font size="3"><b>File to upload:</b></font></label>
+							</div>
+
+
+						</div>
+
+						<div class="row">
+							<div class="col-md-1"></div>
+							<div class="form-control" style="height: 3rem; width: 27rem">
+								<input type="file" name="uploadNameList"
+									class="form-control-label"
 									accept=".zip,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
 
-						
-				
+							</div>
+
+						</div>
+
+						<div class="row">
+							<div class="col-md-3"></div>
+
 							<input type="submit" style="width: 15rem;"
 								class="btn btn-primary" name="Submit" value="Upload">
-					
+
+						</div>
+					</div>
 				</form>
 
-		
+			</div>
+
+		</div>
+
+
+	</div>
 
 
 
