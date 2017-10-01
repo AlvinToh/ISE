@@ -19,6 +19,7 @@
 			<li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
 			<li class="nav-item"><a class="nav-link" href="forumHome.jsp">Forum</a></li>
 			<li class="nav-item"><a class="nav-link" href="changeAvatarName.jsp">Change Avatar Name</a></li>
+			<li class="nav-item"><a class="nav-link" href="uploadNameList.jsp">Upload Name List</a></li>
 			<li class="nav-item"><a class="nav-link" href="logout.jsp">Logout</a></li>
 		</ul>
 	</div>

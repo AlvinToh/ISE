@@ -205,26 +205,24 @@ public class ProfessorDAO {
 	    	return msg;
 	    }
 	    
-	    public  void deleteProfessorSections(int avatar_id){
+	    public  void deleteProfessorSections(String[] sections){
 	        Connection conn = null;
-	         PreparedStatement stmt = null;
 	         String sql = "";
-	         ResultSet rs = null;
+	         PreparedStatement stmt = null;
 
 	         try {
 	             conn = ConnectionManager.getConnection();
-
-	             sql = "delete from professor_section where avatar_id = ?";
-	             stmt = conn.prepareStatement(sql);
-	             stmt.setInt(1, avatar_id);
-
-	             stmt.executeUpdate();
-
+	             sql = "delete from professor_section where group_id = ?";
+	             for(String section:sections){
+	              stmt = conn.prepareStatement(sql);;
+	              stmt.setString(1, section);
+	              stmt.executeUpdate();
+	             }
 	  
 	         } catch (SQLException ex) {
 	            ex.printStackTrace();
 	         } finally {
-	             ConnectionManager.close(conn, stmt, rs);
+	             ConnectionManager.close(conn, stmt);
 	         }
 	  
 	     }

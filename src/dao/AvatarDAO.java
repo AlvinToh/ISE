@@ -1,5 +1,8 @@
 package dao;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.opencsv.CSVReader;
 
 public class AvatarDAO {
 	 private static final String TBLNAME = "avatar";
@@ -223,4 +228,61 @@ public class AvatarDAO {
 		         }
 		         return returnAvatarID;
 		   }
+		 
+		 public ArrayList<String> readNameListCSV(String filename){
+			 ArrayList<String> nameList = new ArrayList<String>();
+			  String[] record = null;
+			   
+			  try{
+			   CSVReader reader = new CSVReader(
+			                 new InputStreamReader(new FileInputStream(filename), "UTF-8"), ',', '"');
+			      while((record = reader.readNext())!=null){
+			       if(record.length!=1){       
+			          nameList.add(record[0].trim());
+			       }
+			      }
+			    }catch(IOException e){
+			   e.printStackTrace();
+			  }
+			  return nameList;
+			  }
+			 
+			 public int upload(String[] nameList) {
+			  int totalUploaded = 0;
+			  Connection conn = null;
+			     PreparedStatement preStmt = null;
+			     try {
+			      conn = ConnectionManager.getConnection();
+			         conn.setAutoCommit(false);
+			         String sql = "insert into "+TBLNAME2+" (avatar_name,status) values (?,?)";
+			         preStmt = conn.prepareStatement(sql);
+			             //preStmt.executeUpdate();
+			         
+			         final int batchSize = 1000;
+			         int count = 0;
+			         
+			             for ( String avatar_name:nameList) {
+			                 preStmt.setString(1,avatar_name);
+			                 preStmt.setInt(2, 0);
+			                 preStmt.addBatch();
+			                 
+			                 if (++count % batchSize == 0) {
+			                     totalUploaded += preStmt.executeBatch().length;
+			                 }
+			             }
+			             
+			             totalUploaded += preStmt.executeBatch().length; // insert remaining records
+			             conn.commit();
+			             preStmt.close();
+
+			         } catch (SQLException e) {
+			            //do nothing;
+			         } finally {
+			             ConnectionManager.close(conn);
+			         }
+			     return totalUploaded;
+			    
+			  }
+		 
+		 
 }

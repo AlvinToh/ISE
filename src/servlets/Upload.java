@@ -66,7 +66,7 @@ public class Upload extends HttpServlet {
 	              	bootstrapErrorMsg = studentDAO.upload(studentList);
 	              	Object[] obj_sections = studentList.values().stream().distinct().toArray();
 	                String[] sections =Arrays.asList(obj_sections).toArray(new String[obj_sections.length]);
-	                profDAO.deleteProfessorSections(prof_avatar);
+	                profDAO.deleteProfessorSections(sections);
 	                profDAO.registerProfessorSections(prof_avatar, sections);
                 }
                
@@ -75,7 +75,7 @@ public class Upload extends HttpServlet {
             	bootstrapErrorMsg = studentDAO.upload(studentList);
             	Object[] obj_sections = studentList.values().stream().distinct().toArray();
                 String[] sections =Arrays.asList(obj_sections).toArray(new String[obj_sections.length]);
-                profDAO.deleteProfessorSections(prof_avatar);
+                profDAO.deleteProfessorSections(sections);
                 profDAO.registerProfessorSections(prof_avatar, sections);
   
             }
