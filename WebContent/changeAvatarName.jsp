@@ -30,56 +30,64 @@
 	<div style="margin-top: 2%"></div>
 	<div class="container text-center">
 		<header>
-			<h2>Change Avatar Name</h2>
+			<h2>Change Avatar</h2>
 			<hr>
 		</header>
-		<form class="form-horizontal" role="form" method="POST"
-			action="ChangeAvatarName">
-			<div class="form-group">
-				<div class="row">
-					<div class="col-md-5"></div>
-					<div class="input-group-addon" style="width: 9rem; height: 2.6rem">
-						<label>Old Avatar Name &nbsp</label>
-					</div>
+		<div class="row justify-content-md-center">
 
-					<input type="text" name="old_avatar_name" id="old_avatar_name"
-						value="<%=old_avatar_name%>" style="width: 9rem" readonly>
+			<div class="col-12 col-md-auto">
+				<div class="uploadBoarder">
+					<form class="form-horizontal" role="form" method="POST"
+						action="ChangeAvatarName">
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="input-group-addon"
+									style="width: 9rem; height: 2.6rem">
+									<label>Old Avatar &nbsp;</label>
+								</div>
 
-				</div>
-				<br>
-				<div class="row">
-					<div class="col-md-5"></div>
-					<div class="input-group-addon" style="width: 9rem; height: 2.6rem">
-						<label>New Avatar Name &nbsp</label>
-					</div>
+								<input type="text" name="old_avatar_name" id="old_avatar_name"
+									value="<%=old_avatar_name%>" style="width: 9rem" readonly>
 
-					<select name="new_avatar_name" id="new_avatar_name" required
-						autofocus style="width: 9rem">
-						<option value="">Select a name</option>
-						<%
-							for (int i = 0; i < unusedAvatarNames.size(); i++) {
-								out.println(
-										"<option value='" + unusedAvatarNames.get(i) + "'>" + unusedAvatarNames.get(i) + "</option>");
-							}
-						%>
+							</div>
+							<br>
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="input-group-addon"
+									style="width: 9rem; height: 2.6rem">
+									<label>New Avatar &nbsp;</label>
+								</div>
 
-					</select>
+								<select name="new_avatar_name" id="new_avatar_name" required
+									autofocus style="width: 9rem">
+									<option value="">Select a name</option>
+									<%
+										for (int i = 0; i < unusedAvatarNames.size(); i++) {
+											out.println(
+													"<option value='" + unusedAvatarNames.get(i) + "'>" + unusedAvatarNames.get(i) + "</option>");
+										}
+									%>
 
-				</div>
-				<br>
-				<div class="row">
-					<div class="col-md-7"></div>
-					<button type="submit" class="btn btn-primary">Change</button>
+								</select>
+
+							</div>
+							<br>
+							<div class="row">
+								<div class="col-md-5"></div>
+								<button type="submit" class="btn btn-primary">Change</button>
+							</div>
+						</div>
+					</form>
 				</div>
 			</div>
-		</form>
-	</div>
+			</div>
+			</div>
 
-	<script
-		src="//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-	<script src="style/js/jquery-3.2.1.min.js"></script>
-	<script src="style/js/bootstrap.min.js"></script>
-	<%@ include file="footer.jsp"%>
-</body>
+			<script
+				src="//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+			<script src="style/js/jquery-3.2.1.min.js"></script>
+			<script src="style/js/bootstrap.min.js"></script>
+			<%@ include file="footer.jsp"%></body>
 
 </html>
