@@ -88,7 +88,7 @@
 						<label for="inputEmail3" class="col-sm-2 col-form-label"><strong>Post
 								Content</strong></label>
 						<div class="col-sm-9">
-							<textarea name="postContent" class="form-control"
+							<textarea name="parentPostContent" class="form-control"
 								id="inputEmail3" readonly> <%=parentPost.getPost_content()%></textarea>
 
 						</div>

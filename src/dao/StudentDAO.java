@@ -48,7 +48,7 @@ public class StudentDAO {
         try {
             conn = ConnectionManager.getConnection();
 
-            sql = "select smu_email_id, smu_email, tele_username, group_id, password, chat_id, veri_code, temp_smu_email_address,avatar_id from " + TBLNAME + " where smu_email_id = ? and password = SHA1(?)";
+            sql = "select smu_email_id, smu_email, tele_username, group_id, password, chat_id, veri_code, temp_smu_email_address,avatar_id from " + TBLNAME + " where smu_email_id = binary? and password = SHA1(?)";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, emailID);
             stmt.setString(2, password);

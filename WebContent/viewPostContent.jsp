@@ -1,6 +1,6 @@
 <%@include file="protect.jsp"%>
 <%@ page
-	import="java.io.*,java.util.*, java.util.concurrent.*, utility.*, entity.Post, dao.AvatarDAO, dao.PostDAO"%>
+	import="java.io.*,java.util.*, java.util.concurrent.*, utility.*, entity.*, dao.AvatarDAO, dao.PostDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
 <head>
@@ -27,11 +27,11 @@
 		
 		PostDAO pd = new PostDAO();
 		Post parentPost = pd.retrieveParentPost(ParentID);
-		Post post = pd.retrieveParentPostID(postID);
+		Post post = pd.retrieveParentPostID(postID);		
 		
+		AvatarDAO avatarDAO = new AvatarDAO();	
 		
-		
-		AvatarDAO avatarDAO = new AvatarDAO();		
+		Professor prof = (Professor) session.getAttribute("professor");
 
 	%>
 	<div style="margin-top: 2%"></div>
@@ -39,24 +39,25 @@
 	<div class="container text-center">
 		<header>
 			<h2>
-				View Post: <%=parentPost.getPost_title() %>
+				View Post:
+				<%=parentPost.getPost_title() %>
 			</h2>
 			<hr>
 		</header>
-		
+
 		<div class="row justify-content-md-left">
 			<div class="col-12 col-md-auto">
 
 				<div class="row">
 
 					<div class="col-2">
-						<div class="btn-group" role="group" aria-label="Basic example">					
+						<div class="btn-group" role="group" aria-label="Basic example">
 							<a class="btn btn-outline-primary" style="width: 8rem"
-								href="viewPost.jsp?post_id=<%=ParentID%>"><b>Back</b></a>
-							<a class="btn btn-outline-primary" style="width: 5rem"
-							    href="replyToRepliedPost.jsp?parentID=<%=ParentID%>&post_id=<%=postID%>"><b>Reply</b></a>
-								
-								
+								href="viewPost.jsp?post_id=<%=ParentID%>"><b>Back</b></a> <a
+								class="btn btn-outline-primary" style="width: 5rem"
+								href="replyToRepliedPost.jsp?parentID=<%=ParentID%>&post_id=<%=postID%>"><b>Reply</b></a>
+
+
 						</div>
 					</div>
 				</div>
@@ -64,7 +65,7 @@
 		</div>
 
 		<div class="viewPostBoarder">
-  
+
 			<table class="table table-bordered">
 				<%
 					// error msg for assign marks
@@ -82,55 +83,52 @@
 				%>
 				<tr>
 					<th width="15%">Post Content</th>
-					<td colspan="4" ><%=post.getPost_content() %></td>
-				
+					<td colspan="4"><%=post.getPost_content() %></td>
 				<tr>
-				
 				<tr>
 					<th width="15%">Post by</th>
-					<td colspan="4" ><%=avatarDAO.getAvatarName(post.getAvatar_id())%></td>				
-				
-				
+					<td colspan="4"><%=avatarDAO.getAvatarName(post.getAvatar_id())%></td>
 				<tr>
-				
 				<tr>
 					<th width="15%">Upvotes</th>
-					<td colspan="4"> 0</td>
-				
+					<td colspan="4">0</td>
 				<tr>
 				<tr>
 					<th width="15%">Post Time</th>
-					<td colspan="4" ><%=post.getTimestamp().toString().replaceAll("\\.\\d+", "")%></td>
-				
-				
-				
+					<td colspan="4"><%=post.getTimestamp().toString().replaceAll("\\.\\d+", "")%></td>
 				<tr>
-				
-				<tr>
-					<th width="15%">Assign Marks</th>
-					<td>
 					<%
-						if (post.getThoughfulness_score() == 0.0) {
-							out.println("<form method='post'  action='AssignMarksForPost'>");
-							out.println("<input type ='text' name='postID' value='"+postID+"' hidden/>");
-							out.println("<input type ='text' name='parentID' value='"+ParentID+"' hidden/>");
-							out.println("<div class='form-group row'><div class='col-3'>  <input class='form-control' type='text' name='mark' id='example-text-input' style='height: 2rem'></div>");
-						    out.println("<input type='hidden' name='hdnbt' value='Save'/><input type='submit' class='btn btn-primary btn-sm' value='Save' style='width: 3rem; height: 2rem'></div></form>");
-							
+						if (prof != null) {
+							out.println("<tr><th width='15%'>Assign Marks</th><td>");
 
-						}else{
-							out.println("<form method='post'  action='AssignMarksForPost'>");
-							out.println("<input type ='text' name='postID' value='"+postID+"' hidden/>");
-							out.println("<input type ='text' name='parentID' value='"+ParentID+"' hidden/>");
-                        	out.println("<div class='form-group row'><div class='col-3'>  <input class='form-control' type='text' name='mark' value='"+post.getThoughfulness_score()+"' disabled id='editMark' style='height: 2rem'></div>");
-						    out.println("<input type='button' name='editMarkBtn' value='Edit' class='btn btn-primary btn-sm' id='btnEdit'  style='width: 3rem; height: 2rem'>");
-						    out.println("<input type='hidden' name='hdnbt' value='Edit'/><input type='submit' name='editMarkBtn' value='Save' class='btn btn-primary btn-sm' id='btnEdit2' hidden style='width: 3rem; height: 2rem'></div></form></div>");
-                        	
+							if (post.getThoughfulness_score() == 0.0) {
+								out.println("<form method='post'  action='AssignMarksForPost'>");
+								out.println("<input type ='text' name='postID' value='" + postID + "' hidden/>");
+								out.println("<input type ='text' name='parentID' value='" + ParentID + "' hidden/>");
+								out.println(
+										"<div class='form-group row'><div class='col-3'>  <input class='form-control' type='text' name='mark' id='example-text-input' style='height: 2rem'></div>");
+								out.println(
+										"<input type='hidden' name='hdnbt' value='Save'/><input type='submit' class='btn btn-primary btn-sm' value='Save' style='width: 3rem; height: 2rem'></div></form>");
+
+							} else {
+								out.println("<form method='post'  action='AssignMarksForPost'>");
+								out.println("<input type ='text' name='postID' value='" + postID + "' hidden/>");
+								out.println("<input type ='text' name='parentID' value='" + ParentID + "' hidden/>");
+								out.println(
+										"<div class='form-group row'><div class='col-3'>  <input class='form-control' type='text' name='mark' value='"
+												+ post.getThoughfulness_score()
+												+ "' disabled id='editMark' style='height: 2rem'></div>");
+								out.println(
+										"<input type='button' name='editMarkBtn' value='Edit' class='btn btn-primary btn-sm' id='btnEdit'  style='width: 3rem; height: 2rem'>");
+								out.println(
+										"<input type='hidden' name='hdnbt' value='Edit'/><input type='submit' name='editMarkBtn' value='Save' class='btn btn-primary btn-sm' id='btnEdit2' hidden style='width: 3rem; height: 2rem'></div></form></div>");
+
+							}
+
+							out.println("</td></tr>");
 						}
 					%>
-					</td>
 				
-				<tr>
 			</table>
 		</div>
 	</div>

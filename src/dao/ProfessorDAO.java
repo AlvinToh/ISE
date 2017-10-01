@@ -46,7 +46,7 @@ public class ProfessorDAO {
 	        try {
 	            conn = ConnectionManager.getConnection();
 
-	            sql = "select smu_email, password,avatar_id from " + TBLNAME + " where smu_email_id = ? and password = SHA1(?)";
+	            sql = "select smu_email, password,avatar_id from " + TBLNAME + " where smu_email_id = binary? and password = SHA1(?)";
 	            stmt = conn.prepareStatement(sql);
 	            stmt.setString(1, emailID);
 	            stmt.setString(2, password);
