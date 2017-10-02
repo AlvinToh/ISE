@@ -94,7 +94,6 @@ public class AuthHelper {
 	  
 	  // Retrieving professor Access codes from email
 	  ProfessorDAO profDAO = new ProfessorDAO();
-	  System.out.println("THIS IS PROF EMAIL:" + profEmail);
 	  String[] profAccessCodes = profDAO.retrieveProfessorAccessCode(profEmail);
 	  appId = profAccessCodes[0];
 	  appPassword = profAccessCodes[1];
