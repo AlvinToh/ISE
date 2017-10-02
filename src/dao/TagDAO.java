@@ -5,12 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import entity.Post;
 import entity.Tag;
 
 public class TagDAO {
@@ -38,7 +36,7 @@ public class TagDAO {
 
 	// table post_tag, retrieve all tags id for selected post
 	public List<Integer> retrieveTags(int post_id) {
-		List<Integer> tagList = new ArrayList();
+		List<Integer> tagList = new ArrayList<Integer>();
 
 		Connection conn = null;
 		ResultSet rs = null;
@@ -129,7 +127,6 @@ public class TagDAO {
 		ResultSet rs = null;
 		PreparedStatement preStmt = null;
 
-		Tag tempTag = null;
 		try {
 			conn = ConnectionManager.getConnection();
 			String sql = "select * from " + TAG_TBL;

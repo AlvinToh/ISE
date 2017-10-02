@@ -49,6 +49,7 @@ public class Authcalendar extends HttpServlet {
         UUID expectedNonce = (UUID) session.getAttribute("expected_nonce");
         TokenResponse tokenResponse = null;
         IdToken idTokenObj = null;
+        
         String email = "";
 
         // Make sure that the state query parameter returned matches

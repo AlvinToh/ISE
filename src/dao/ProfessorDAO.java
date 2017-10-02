@@ -255,5 +255,38 @@ public class ProfessorDAO {
 		        }
 		        return sections;
 	    }
+	    
+	    public String[] retrieveProfessorAccessCode(String profEmail){
+	    	Connection conn = null;
+	        PreparedStatement stmt = null;
+	        String sql = "";
+	        String[] accessCodes = new String[3];
+	        ResultSet rs = null;
+
+	        try {
+	            conn = ConnectionManager.getConnection();
+
+	            sql = "select appId, appPassword, redirectUrl from professor_access_code where smu_email = ?";
+	            stmt = conn.prepareStatement(sql);
+	            stmt.setString(1, profEmail);
+	            
+	            rs = stmt.executeQuery();
+	            
+	            while (rs.next()) {
+	            	String appId = rs.getString(1);
+	            	String appPassword = rs.getString(2);
+	            	String redirectUrl = rs.getString(3);
+	            	accessCodes[0] = appId;
+	            	accessCodes[1] = appPassword;
+	            	accessCodes[2] = redirectUrl;
+	            }
+
+	        } catch (SQLException ex) {
+	            handleSQLException(ex, sql, "prof={" + profEmail + "}");
+	        } finally {
+	            ConnectionManager.close(conn, stmt, rs);
+	        }
+	        return accessCodes;
+	    }
 
 }

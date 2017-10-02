@@ -241,6 +241,7 @@ public class AvatarDAO {
 			          nameList.add(record[0].trim());
 			       }
 			      }
+			      reader.close();
 			    }catch(IOException e){
 			   e.printStackTrace();
 			  }

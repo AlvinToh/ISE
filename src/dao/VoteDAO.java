@@ -4,15 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import entity.Post;
-import entity.Tag;
 import entity.Vote;
 
 public class VoteDAO {
@@ -45,7 +41,7 @@ public class VoteDAO {
 
 	// retrieve all votes voted by avatar_id
 	public Map<String, Vote> retrieveVotes(int avatar_id) {
-		Map<String, Vote> resultMap = new HashMap();
+		Map<String, Vote> resultMap = new HashMap<String, Vote>();
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement preStmt = null;

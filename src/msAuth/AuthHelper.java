@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.UUID;
 
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import org.springframework.web.util.UriComponentsBuilder;
+
+import dao.ProfessorDAO;
 
 public class AuthHelper {
   private static final String authority = "https://login.microsoftonline.com";
@@ -28,6 +31,7 @@ public class AuthHelper {
   private static String appId = null;
   private static String appPassword = null;
   private static String redirectUrl = null;
+  private static String profEmail = null;
 
   private static String getAppId() {
     if (appId == null) {
@@ -87,13 +91,19 @@ public class AuthHelper {
     else {
       throw new FileNotFoundException("Property file '" + authConfigFile + "' not found in the classpath.");
     }*/
-	  appId = "2c59e4a6-604d-43bf-bda4-fce0b5e5c0cb";
-	  appPassword = "115PrdHYDwXa05D4h7ZW3HK";
-	  redirectUrl = "http://localhost:8080/ISE/consultation.jsp";
+	  
+	  // Retrieving professor Access codes from email
+	  ProfessorDAO profDAO = new ProfessorDAO();
+	  System.out.println("THIS IS PROF EMAIL:" + profEmail);
+	  String[] profAccessCodes = profDAO.retrieveProfessorAccessCode(profEmail);
+	  appId = profAccessCodes[0];
+	  appPassword = profAccessCodes[1];
+	  redirectUrl = profAccessCodes[2];
   }
 
-  public static String getLoginUrl(UUID state, UUID nonce) {
-
+  public static String getLoginUrl(UUID state, UUID nonce, String email) {
+	
+	profEmail = email;
     UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromHttpUrl(authorizeUrl);
     urlBuilder.queryParam("client_id", getAppId());
     urlBuilder.queryParam("redirect_uri", getRedirectUrl());

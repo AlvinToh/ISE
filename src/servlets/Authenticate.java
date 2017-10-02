@@ -51,7 +51,10 @@ public class Authenticate extends HttpServlet {
   	  	session.setAttribute("expected_state", state);
   	  	session.setAttribute("expected_nonce", nonce);
   	  	
-  	  	String loginUrl = AuthHelper.getLoginUrl(state, nonce);
+  	  	// Need to suit this profEmail to email account created
+  	  	String profEmail = "ise102@outlook.com";
+  	  	
+  	  	String loginUrl = AuthHelper.getLoginUrl(state, nonce, profEmail);
   	  	session.setAttribute("loginUrl", loginUrl);
 		
 		if (student != null) {

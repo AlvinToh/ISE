@@ -8,14 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import dao.ProfessorDAO;
-import dao.StudentDAO;
 import dao.WeeklyPostSummaryDAO;
-import entity.Professor;
-import entity.Student;
-
 /**
  * Servlet implementation class AssignMarks
  */
