@@ -30,13 +30,13 @@ public class PendingTimeSlot extends HttpServlet {
 			throws ServletException, IOException {
     	
     	HttpSession session = request.getSession();
-    	String professorEmail = (String) session.getAttribute("email");
+    	String professorOutLookEmail = (String) session.getAttribute("professorOutLookEmail");
     	String timeSlotID = request.getParameter("timeslot_id");
     	String postAction = request.getParameter("postAction");
     	
     	ConsultationTimeSlotDAO consultationTimeSlotDAO = new ConsultationTimeSlotDAO();
-    	consultationTimeSlotDAO.updateStatus(professorEmail, timeSlotID, postAction);
-    	FullCalendarEvent FcEvent = consultationTimeSlotDAO.retrieveStudentTimeSlot(professorEmail, timeSlotID);
+    	consultationTimeSlotDAO.updateStatus(professorOutLookEmail, timeSlotID, postAction);
+    	FullCalendarEvent FcEvent = consultationTimeSlotDAO.retrieveStudentTimeSlot(professorOutLookEmail, timeSlotID);
     	
     	if(postAction.equals("approve")){
     		String msg="Student timeslot approved successfully.";

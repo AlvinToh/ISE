@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.ProfessorDAO;
 import msAuth.AuthHelper;
 import msAuth.IdToken;
 import msAuth.TokenResponse;
@@ -43,6 +44,7 @@ public class Authcalendar extends HttpServlet {
 		String idToken = (String) request.getParameter("id_token");
 		session.setAttribute("id_token", idToken);
 		
+		
 		String state = (String) request.getParameter("state");
 		session.setAttribute("state", state);
         UUID expectedState = (UUID) session.getAttribute("expected_state");
@@ -50,20 +52,29 @@ public class Authcalendar extends HttpServlet {
         TokenResponse tokenResponse = null;
         IdToken idTokenObj = null;
         
+        String profEmailID = (String) session.getAttribute("profEmailID");
+        ProfessorDAO professorDAO = new ProfessorDAO();
+        String profEmailOutLookAccount = professorDAO.retrieveProfessorOutlookEmail(profEmailID);
+        
+        
         String email = "";
 
         // Make sure that the state query parameter returned matches
         // the expected state
         String accessToken = (String) session.getAttribute("accessToken");
+        
         if(accessToken == null || accessToken.isEmpty()){
         if (state.equals(expectedState.toString())) {
+        	
         	idTokenObj = IdToken.parseEncodedToken(idToken, expectedNonce.toString());
+        	
         	if (idTokenObj != null) {
         	  tokenResponse = AuthHelper.getTokenFromAuthCode(code, idTokenObj.getTenantId());
         	  session.setAttribute("accessToken", tokenResponse.getAccessToken());
         	  session.setAttribute("userConnected", true);
         	  session.setAttribute("userName", idTokenObj.getName());
         	  session.setAttribute("tokens", tokenResponse);
+        	  
         	// Get user info
         	  OutlookService outlookService = OutlookServiceBuilder.getOutlookService(tokenResponse.getAccessToken(), null);
         	  OutlookUser user;
@@ -82,6 +93,7 @@ public class Authcalendar extends HttpServlet {
         else {
           session.setAttribute("error", "Unexpected state returned from authority.");
         }
+        
 
         OutlookService outlookService = OutlookServiceBuilder.getOutlookService(tokenResponse.getAccessToken(), email);
 

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 
 import dao.ConsultationTimeSlotDAO;
+import dao.ProfessorDAO;
 import entity.Professor;
 import msAuth.Event;
 import msAuth.FullCalendarEvent;
@@ -78,7 +79,12 @@ public class Calendarjson extends HttpServlet {
 		
 		//Add the events from Consultation timeslot for creating free slot by professor
 		Professor professor = (Professor) session.getAttribute("professor");
-		String professorEmail = professor.getProf_smu_email();
+		
+		
+		String profEmailID = (String) session.getAttribute("profEmailID");
+		ProfessorDAO professorDAO = new ProfessorDAO();
+		
+		String professorEmail = professorDAO.retrieveProfessorOutlookEmail(profEmailID);
 		
 		ConsultationTimeSlotDAO consultationTimeSlotDAO = new ConsultationTimeSlotDAO();
 		List<FullCalendarEvent> freeTimeSlotList = consultationTimeSlotDAO.retrieveFreeTimeSlots(professorEmail);

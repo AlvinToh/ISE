@@ -142,7 +142,8 @@ public class ConsultationTimeSlotDAO {
                 fcEvent.setStudentEmail(studentEmail);
                 fcEvent.setStart(startDateTime);
                 fcEvent.setEnd(endDateTime);
-                fcEvent.setColor("yellow");                
+                fcEvent.setColor("yellow");
+                fcEvent.setProfEmail(professorEmail);
             }
             //return resultUser;
 

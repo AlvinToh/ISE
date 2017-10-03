@@ -42,6 +42,13 @@ public class Authenticate extends HttpServlet {
 		ProfessorDAO professorDAO = new ProfessorDAO();
 		Professor professor = professorDAO.retrieveProfessor(emailID, password);
 		
+		String profEmailID = "";
+		if(professor!= null){
+			profEmailID = emailID;
+		}
+		
+		String professorOutLookEmail = professorDAO.retrieveProfessorOutlookEmail(profEmailID);
+		
 		UUID state = UUID.randomUUID();
   	  	UUID nonce = UUID.randomUUID();
   	  	
@@ -52,9 +59,8 @@ public class Authenticate extends HttpServlet {
   	  	session.setAttribute("expected_nonce", nonce);
   	  	
   	  	// Need to suit this profEmail to email account created
-  	  	String profEmail = "ise102@outlook.com";
   	  	
-  	  	String loginUrl = AuthHelper.getLoginUrl(state, nonce, profEmail);
+  	  	String loginUrl = AuthHelper.getLoginUrl(state, nonce, profEmailID);
   	  	session.setAttribute("loginUrl", loginUrl);
 		
 		if (student != null) {
@@ -65,6 +71,8 @@ public class Authenticate extends HttpServlet {
 		} else if (professor != null){
 			session.setAttribute("professor", professor);
 			session.setAttribute("email", professor.getProf_smu_email());
+			session.setAttribute("profEmailID", profEmailID);
+			session.setAttribute("professorOutLookEmail", professorOutLookEmail);
 			response.sendRedirect("home.jsp");
 		
 		} else {

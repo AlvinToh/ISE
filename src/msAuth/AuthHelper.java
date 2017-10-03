@@ -31,7 +31,7 @@ public class AuthHelper {
   private static String appId = null;
   private static String appPassword = null;
   private static String redirectUrl = null;
-  private static String profEmail = null;
+  private static String profID = null;
 
   private static String getAppId() {
     if (appId == null) {
@@ -94,15 +94,15 @@ public class AuthHelper {
 	  
 	  // Retrieving professor Access codes from email
 	  ProfessorDAO profDAO = new ProfessorDAO();
-	  String[] profAccessCodes = profDAO.retrieveProfessorAccessCode(profEmail);
+	  String[] profAccessCodes = profDAO.retrieveProfessorAccessCode(profID);
 	  appId = profAccessCodes[0];
 	  appPassword = profAccessCodes[1];
 	  redirectUrl = profAccessCodes[2];
   }
 
-  public static String getLoginUrl(UUID state, UUID nonce, String email) {
+  public static String getLoginUrl(UUID state, UUID nonce, String profEmailID) {
 	
-	profEmail = email;
+	profID = profEmailID;
     UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromHttpUrl(authorizeUrl);
     urlBuilder.queryParam("client_id", getAppId());
     urlBuilder.queryParam("redirect_uri", getRedirectUrl());

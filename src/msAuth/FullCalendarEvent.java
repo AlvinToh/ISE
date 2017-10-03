@@ -8,6 +8,7 @@ public class FullCalendarEvent {
 	private boolean allDay;
 	private String color;
 	private String studentEmail;
+	private String profEmail;
 	
 	public String getId(){
 		return id;
@@ -64,5 +65,13 @@ public class FullCalendarEvent {
 	
 	public void setStudentEmail(String studentEmail){
 		this.studentEmail = studentEmail;
+	}
+	
+	public String getProfEmail(){
+		return profEmail;
+	}
+	
+	public void setProfEmail(String profEmail){
+		this.profEmail = profEmail;
 	}
 }

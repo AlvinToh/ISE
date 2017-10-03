@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.ConsultationTimeSlotDAO;
+import dao.ProfessorDAO;
 import entity.Professor;
 
 /**
@@ -65,9 +66,14 @@ public class CreateFreeSlot extends HttpServlet {
 			rd.forward(request, response);
 			
     	} else{
-		
+    		
+    		String profEmailID = (String) session.getAttribute("profEmailID");
+    		
+    		ProfessorDAO professorDAO = new ProfessorDAO();
+    		String professorOutlookEmail = professorDAO.retrieveProfessorOutlookEmail(profEmailID);
+    		
     		ConsultationTimeSlotDAO consultationTimeSlotDAO = new ConsultationTimeSlotDAO();
-    		consultationTimeSlotDAO.createFreeTimeSlot(professorEmail, title, subStartDateTime, subEndDateTime);
+    		consultationTimeSlotDAO.createFreeTimeSlot(professorOutlookEmail, title, subStartDateTime, subEndDateTime);
 		
     		String msg="Free timeslot created successfully.";
 			session.setAttribute("successfulTimeSlotMsg", msg);

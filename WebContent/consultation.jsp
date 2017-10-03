@@ -211,8 +211,8 @@ String url="jdbc:mysql://localhost:3306/is102_cat";
 String username="root";
 String password="";
 
-String email = (String) session.getAttribute("email");
-String query="select * from student_consultationtimeslot where smu_email = '" + email + "' and status = 'pending'";
+String professorOutLookEmail = (String) session.getAttribute("professorOutLookEmail");
+String query="select * from student_consultationtimeslot where smu_email = '" + professorOutLookEmail + "' and status = 'pending'";
 Connection conn=DriverManager.getConnection(url, username, password);
 Statement stmt=conn.createStatement();
 ResultSet rs=stmt.executeQuery(query);

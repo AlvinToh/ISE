@@ -52,15 +52,10 @@ public class Postcalendar extends HttpServlet {
     	HttpSession session = request.getSession();
     	FullCalendarEvent FcEvent = (FullCalendarEvent) session.getAttribute("FcEvent");
     	
-        String profEmailAdd = "";
 		String accessToken = (String) session.getAttribute("accessToken");
 		String postAction = (String) session.getAttribute("postAction");
 		
-		String studentEmailAdd = FcEvent.getStudentEmail();
-
-		//PROFESSOR EMAIL ADDRESS IS HARDCODED FOR NOW
-		profEmailAdd = "ise102@outlook.com";
-		
+		//POSTCalendar smtp Server is hardcoded for now
 		ConfigLoader.loadProperties("simplejavamail.properties", true); // optional default
 		ConfigLoader.loadProperties("overrides.properties", true); // optional extra
 		
@@ -94,7 +89,7 @@ public class Postcalendar extends HttpServlet {
 		
 		if(postAction.equals("approve")){
 			
-			OutlookService outlookService = OutlookServiceBuilder.getOutlookService(accessToken, profEmailAdd);
+			OutlookService outlookService = OutlookServiceBuilder.getOutlookService(accessToken, FcEvent.getProfEmail());
 
 			// Set the parameters to create an event in Outlook Calendar
 			// Need to set the correct format for JSON to sent to outlook server
@@ -114,7 +109,7 @@ public class Postcalendar extends HttpServlet {
 			studentEmail.setReplyToAddress("CAT102 Platform", smtpGmail);
 			
 			//Testing my SMU Email address first
-			studentEmail.addNamedToRecipients(studentEmailAdd, "alvin.toh.2014@sis.smu.edu.sg");
+			studentEmail.addNamedToRecipients(FcEvent.getStudentEmail(), FcEvent.getStudentEmail());
 			studentEmail.setSubject("Approved Consultation Timeslot for: " + FcEvent.getTitle());
 			studentEmail.setText("Hi " + FcEvent.getStudentEmail() + ", "
 				+ "\n\tyour consultation timeslot has been approved. "
@@ -132,9 +127,9 @@ public class Postcalendar extends HttpServlet {
 			profEmail.setReplyToAddress("CAT102 Platform", smtpGmail);
 			
 			//Testing ISE outlook email address first
-			profEmail.addNamedToRecipients(profEmailAdd, profEmailAdd);
+			profEmail.addNamedToRecipients(FcEvent.getProfEmail(), FcEvent.getProfEmail());
 			profEmail.setSubject("Approved Consultation Timeslot for: " + FcEvent.getTitle());
-			profEmail.setText("Hi " + profEmailAdd + ", "
+			profEmail.setText("Hi " + FcEvent.getProfEmail() + ", "
 				+ "\n\tyour consultation timeslot has been approved. "
 				+ "\n\tThe details of the consultation timeslot are as follows,"
 				+ "\n\t\tTitle: " + FcEvent.getTitle()
@@ -151,8 +146,8 @@ public class Postcalendar extends HttpServlet {
 			studentEmail.setFromAddress("CAT102 Platform", smtpGmail);
 			studentEmail.setReplyToAddress("CAT102 Platform", smtpGmail);
 			
-			//Testing my SMU Email address first
-			studentEmail.addNamedToRecipients(studentEmailAdd, "alvin.toh.2014@sis.smu.edu.sg");
+			//Testing my SMU Student Email address first
+			studentEmail.addNamedToRecipients(FcEvent.getStudentEmail(), FcEvent.getStudentEmail());
 			studentEmail.setSubject("Rejected Consultation Timeslot for: " + FcEvent.getTitle());
 			studentEmail.setText("Hi " + FcEvent.getStudentEmail() + ", "
 				+ "\n\tyour consultation timeslot has been rejected. "
@@ -170,9 +165,9 @@ public class Postcalendar extends HttpServlet {
 			profEmail.setReplyToAddress("CAT102 Platform", smtpGmail);
 			
 			//Testing ISE outlook email address first
-			profEmail.addNamedToRecipients(profEmailAdd, profEmailAdd);
+			profEmail.addNamedToRecipients(FcEvent.getProfEmail(), FcEvent.getProfEmail());
 			profEmail.setSubject("Rejected Consultation Timeslot for: " + FcEvent.getTitle());
-			profEmail.setText("Hi " + FcEvent.getStudentEmail() + ", "
+			profEmail.setText("Hi " + FcEvent.getProfEmail() + ", "
 				+ "\n\tyour consultation timeslot has been rejected. "
 				+ "\n\tThe details of the consultation timeslot are as follows,"
 				+ "\n\t\tTitle: " + FcEvent.getTitle()

@@ -256,7 +256,7 @@ public class ProfessorDAO {
 		        return sections;
 	    }
 	    
-	    public String[] retrieveProfessorAccessCode(String profEmail){
+	    public String[] retrieveProfessorAccessCode(String profEmailID){
 	    	Connection conn = null;
 	        PreparedStatement stmt = null;
 	        String sql = "";
@@ -266,9 +266,9 @@ public class ProfessorDAO {
 	        try {
 	            conn = ConnectionManager.getConnection();
 
-	            sql = "select appId, appPassword, redirectUrl from professor_access_code where smu_email = ?";
+	            sql = "select appId, appPassword, redirectUrl from professor_access_code where emailID = ?";
 	            stmt = conn.prepareStatement(sql);
-	            stmt.setString(1, profEmail);
+	            stmt.setString(1, profEmailID);
 	            
 	            rs = stmt.executeQuery();
 	            
@@ -282,11 +282,39 @@ public class ProfessorDAO {
 	            }
 
 	        } catch (SQLException ex) {
-	            handleSQLException(ex, sql, "prof={" + profEmail + "}");
+	            handleSQLException(ex, sql, "prof={" + profEmailID + "}");
 	        } finally {
 	            ConnectionManager.close(conn, stmt, rs);
 	        }
 	        return accessCodes;
+	    }
+	    
+	    public String retrieveProfessorOutlookEmail(String profEmailID){
+	    	Connection conn = null;
+	        PreparedStatement stmt = null;
+	        String sql = "";
+	        String profEmail = "";
+	        ResultSet rs = null;
+
+	        try {
+	            conn = ConnectionManager.getConnection();
+
+	            sql = "select smu_email from professor_access_code where emailID = ?";
+	            stmt = conn.prepareStatement(sql);
+	            stmt.setString(1, profEmailID);
+	            
+	            rs = stmt.executeQuery();
+	            
+	            while (rs.next()) {
+	            	profEmail = rs.getString(1);
+	            }
+
+	        } catch (SQLException ex) {
+	            handleSQLException(ex, sql, "prof={" + profEmailID + "}");
+	        } finally {
+	            ConnectionManager.close(conn, stmt, rs);
+	        }
+	        return profEmail;
 	    }
 
 }
