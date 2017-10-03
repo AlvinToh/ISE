@@ -52,10 +52,7 @@ public class Authcalendar extends HttpServlet {
         TokenResponse tokenResponse = null;
         IdToken idTokenObj = null;
         
-        String profEmailID = (String) session.getAttribute("profEmailID");
-        ProfessorDAO professorDAO = new ProfessorDAO();
-        String profEmailOutLookAccount = professorDAO.retrieveProfessorOutlookEmail(profEmailID);
-        
+        String professorOutLookEmail = (String) session.getAttribute("professorOutLookEmail");
         
         String email = "";
 
@@ -64,8 +61,8 @@ public class Authcalendar extends HttpServlet {
         String accessToken = (String) session.getAttribute("accessToken");
         
         if(accessToken == null || accessToken.isEmpty()){
+        
         if (state.equals(expectedState.toString())) {
-        	
         	idTokenObj = IdToken.parseEncodedToken(idToken, expectedNonce.toString());
         	
         	if (idTokenObj != null) {
@@ -74,9 +71,10 @@ public class Authcalendar extends HttpServlet {
         	  session.setAttribute("userConnected", true);
         	  session.setAttribute("userName", idTokenObj.getName());
         	  session.setAttribute("tokens", tokenResponse);
+        	  accessToken = tokenResponse.getAccessToken();
         	  
         	// Get user info
-        	  OutlookService outlookService = OutlookServiceBuilder.getOutlookService(tokenResponse.getAccessToken(), null);
+        	  OutlookService outlookService = OutlookServiceBuilder.getOutlookService(tokenResponse.getAccessToken(), professorOutLookEmail);
         	  OutlookUser user;
         	  try {
         	    user = outlookService.getCurrentUser().execute().body();
@@ -93,10 +91,11 @@ public class Authcalendar extends HttpServlet {
         else {
           session.setAttribute("error", "Unexpected state returned from authority.");
         }
+        }
         
 
-        OutlookService outlookService = OutlookServiceBuilder.getOutlookService(tokenResponse.getAccessToken(), email);
-
+        OutlookService outlookService = OutlookServiceBuilder.getOutlookService(accessToken, professorOutLookEmail);
+        
         // Sort by start time in descending order
         String sort = "start/dateTime DESC";
         // Only return the properties we care about
@@ -112,7 +111,6 @@ public class Authcalendar extends HttpServlet {
           session.setAttribute("events", arrEvents);
         } catch (IOException e) {
           session.setAttribute("error", e.getMessage());
-        }
         }
                 
         response.sendRedirect("authcalendar.jsp");
